@@ -15,8 +15,6 @@ import org.apache.shiro.util.Factory;
  * @author Winston Prakash
  */
 public class PluginCentralSecurity {
-
-    private static final PluginCentralSecurity instance = new PluginCentralSecurity();
     
     private final String iniResourcePath = "classpath:org/hudsonci/plugincentral/security/plugin-central-security.ini";
             
@@ -34,18 +32,11 @@ public class PluginCentralSecurity {
     public static final String PLUGIN_DELETE = "plugin:delete";
     public static final String PLUGIN_UPLOAD = "plugin:upload";
     
-    private PluginCentralSecurity() {
+    public PluginCentralSecurity() {
         Factory<SecurityManager> factory = new IniSecurityManagerFactory(iniResourcePath);
         SecurityManager securityManager = factory.getInstance();
         SecurityUtils.setSecurityManager(securityManager);
-
         currentUser = SecurityUtils.getSubject();
-
-        Session session = currentUser.getSession();
-    }
-    
-    public static PluginCentralSecurity getInstance(){
-        return instance;
     }
     
     public Session getSession(){

@@ -1,4 +1,3 @@
-
 package org.hudsonci.plugincentral.security;
 
 import static org.junit.Assert.assertEquals;
@@ -6,6 +5,7 @@ import org.junit.Test;
 
 /**
  * Test class to test Plugin Central Security
+ *
  * @author Winston Prakash <winston.prakash@oracle.com>
  */
 public class PluginCentralSecurityTest {
@@ -18,7 +18,7 @@ public class PluginCentralSecurityTest {
         System.out.println("login");
         String userName = "sysadmin";
         String password = "admin007";
-        PluginCentralSecurity instance = PluginCentralSecurity.getInstance();
+        PluginCentralSecurity instance = new PluginCentralSecurity();
         instance.login(userName, password);
     }
 
@@ -30,8 +30,8 @@ public class PluginCentralSecurityTest {
         System.out.println("isAuthenticated");
         String userName = "sysadmin";
         String password = "admin007";
-        PluginCentralSecurity instance = PluginCentralSecurity.getInstance();
-         instance.login(userName, password);
+        PluginCentralSecurity instance = new PluginCentralSecurity();
+        instance.login(userName, password);
         boolean expResult = true;
         boolean result = instance.isAuthenticated();
         assertEquals(expResult, result);
@@ -45,8 +45,8 @@ public class PluginCentralSecurityTest {
         System.out.println("logout");
         String userName = "sysadmin";
         String password = "admin007";
-        PluginCentralSecurity instance = PluginCentralSecurity.getInstance();
-         instance.login(userName, password);
+        PluginCentralSecurity instance = new PluginCentralSecurity();
+        instance.login(userName, password);
         instance.logout();
     }
 
@@ -59,12 +59,12 @@ public class PluginCentralSecurityTest {
         String roleName = "";
         String userName = "sysadmin";
         String password = "admin007";
-        PluginCentralSecurity instance = PluginCentralSecurity.getInstance();
+        PluginCentralSecurity instance = new PluginCentralSecurity();
         instance.login(userName, password);
         boolean expResult = true;
         boolean result = instance.hasRole(PluginCentralSecurity.SYSADMIN);
         assertEquals(expResult, result);
-        
+
     }
 
     /**
@@ -76,10 +76,10 @@ public class PluginCentralSecurityTest {
         String userName = "hudson";
         String password = "hudson123";
         String permission = PluginCentralSecurity.PLUGIN_UPDATE;
-        PluginCentralSecurity instance = PluginCentralSecurity.getInstance();
+        PluginCentralSecurity instance = new PluginCentralSecurity();
         instance.login(userName, password);
         boolean expResult = true;
         boolean result = instance.isPermitted(permission);
         assertEquals(expResult, result);
-    }  
+    }
 }
