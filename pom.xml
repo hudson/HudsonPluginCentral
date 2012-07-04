@@ -17,6 +17,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        <dependency>
             <groupId>org.eclipse.hudson.stapler</groupId>
             <artifactId>stapler-jelly</artifactId>
             <version>3.0.0-M1-1</version>

@@ -38,6 +38,10 @@ jQuery(document).ready(function() {
         });
     });
     
+    jQuery('#logoutLink').click(function() {
+         doLogout();
+    });
+    
     jQuery('#uploadLink').click(function() {
         jQuery('#dialog-upload').dialog({
             resizable: false,
@@ -68,7 +72,94 @@ jQuery(document).ready(function() {
     
     // select the first item
     selectSelectableElement (jQuery("#selectable"), jQuery("#selectable").children(":eq(0)"));
+    
+    jQuery('#loginLink').click(function(e){
+        jQuery('#loginError').hide();
+        jQuery('#loginMsg').hide();
+        jQuery('#loginDialog').dialog({
+            resizable: false,
+            height:250,
+            width: 350,
+            modal: true,
+            buttons: {
+                'Login': function() {
+                    submitLoginForm();
+                    jQuery( this ).dialog("close");
+                },
+                Cancel: function() {
+                    jQuery('#j_username').attr({
+                        value:""
+                    });
+                    jQuery('#j_password').attr({
+                        value:""
+                    });
+                    jQuery( this ).dialog("close");
+                }
+            }
+        });
+    });
+    
+    jQuery('#j_username').keypress(function(e){
+        if(e.which == 13){
+            submitLoginForm();
+        }
+    });
+            
+    jQuery('#j_password').keypress(function(e){
+        if(e.which == 13){
+            submitLoginForm();
+        }
+    });
+
+    jQuery('#loginButton').click(function() {
+        submitLoginForm();
+    });
+            
 });
+
+function submitLoginForm(){
+    jQuery('#loginError').hide();
+    jQuery('#loginMsg').show();
+    var dataString = jQuery("#loginForm").serialize();
+    jQuery.ajax({
+        type: 'POST',
+        url: "login",
+        data: dataString,
+        success: function(){
+            window.location.href=".";
+        },
+        error: function(){
+            jQuery('#loginError').show();
+            jQuery('#loginMsg').hide();
+        },
+        dataType: "html"
+    }); 
+}
+
+function doLogout(){
+     
+    jQuery.ajax({
+        type: 'POST',
+        url: "logout",
+        success: function(){
+            window.location.href=".";
+        },
+        error: function(){
+             
+        }
+    }); 
+}
+
+function showLoginDialog(){
+    jQuery.blockUI({
+        message: jQuery('#loginDialog'),
+        css: { 
+            width: '350px'
+        },
+        title:  'Confirmation'
+    });
+    jQuery('j_username').focus();
+}
 
 function submitDeleteForm(){
     jQuery("#pluginUpdateMsg").hide();

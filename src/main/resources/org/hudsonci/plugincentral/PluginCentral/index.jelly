@@ -18,7 +18,16 @@
             <h1 style="color:#5C3566">
                 Hudson Plugin Central 
             </h1>
-        </span>
+        </span> 
+        
+        <j:if test="${!it.security.isAuthenticated()}">
+            <a href="#" id="loginLink">Login</a>
+        </j:if>
+        <j:if test="${it.security.isAuthenticated()}">
+            <p id="logoutLink">Welcome ${it.security.username} 
+                <a href="#"> Logout</a>
+            </p>
+        </j:if>
      
         <div>
             <div id="headerLeft"> 
@@ -30,7 +39,9 @@
                 <h3 style="float:left">
                     Plugin Details
                 </h3>
-                <a href="#" id="uploadLink">Upload new Plugin</a>
+                <j:if test="${it.security.isPermitted('plugin:upload')}">
+                    <a href="#" id="uploadLink">Upload new Plugin</a>
+                </j:if>
             </div>
             <br style="clear:both"/>
         </div>
@@ -52,8 +63,12 @@
                     <!-- Plugin data is injected here using Ajax -->
                     </div>
                 </form>
-                <input type="button" id="updateButton" value="Update" />
-                <input type="button" id="deleteButton" value="Delete" />
+                <j:if test="${it.security.isPermitted('plugin:update')}">
+                    <input type="button" id="updateButton" value="Update" />
+                </j:if>
+                <j:if test="${it.security.isPermitted('plugin:delete')}">
+                    <input type="button" id="deleteButton" value="Delete" />
+                </j:if>
                 <br/>
                 <span id="pluginUpdateMsg">
                      <!-- Plugin data operation message injected -->
@@ -82,6 +97,40 @@
             <span id="pluginUploadMsg">
             <!-- Plugin upload operation message injected -->
             </span>
+        </div>
+    </div>
+
+    <div id="loginDialog" style="display:none; cursor: default">
+        <j:set var="submitFrom" value="${from}" />
+        <div style="margin: 2em;">
+        <!-- login form -->
+            <form id="loginForm"  style="text-size:smaller">
+                <table cellspacing="10">
+                    <tr>
+                        <td>${%User}:</td>
+                        <td>
+                            <input type="text" name="j_username" id="j_username" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td >${%Password}:</td>
+                        <td>
+                            <input  type="password" name="j_password" id="j_password"/>
+                        </td>
+                    </tr>
+                </table>
+                <input type="hidden" name="from" value="${submitFrom}" />
+
+            </form>
+
+            <div id="loginError">
+                ${%Invalid login information. Please try again.}
+            </div>
+
+            <div id="loginMsg">
+                ${%Logging in...}
+            </div>
+        
         </div>
     </div>
     

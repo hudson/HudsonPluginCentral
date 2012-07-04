@@ -13,6 +13,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.hudsonci.plugincentral.model.HpiProcessor;
 import org.hudsonci.plugincentral.model.Plugin;
 import org.hudsonci.plugincentral.model.UpdateSiteMetadata;
+import org.hudsonci.plugincentral.security.PluginCentralSecurity;
 import org.kohsuke.stapler.*;
 
 /**
@@ -30,6 +31,8 @@ public class PluginCentral {
     private UpdateSiteMetadata hudsonUpdateSiteMetadata;
     private File tempPluginsDir;
     private HpiProcessor hpiProcessor = new HpiProcessor(DOWNLOAD_SITE_URL, PLUGIN_DOWNLOAD_PATH);
+    
+    private PluginCentralSecurity security = PluginCentralSecurity.getInstance();
 
     public PluginCentral() throws IOException {
         StringBuilder StringBuilder = new StringBuilder();
@@ -61,8 +64,33 @@ public class PluginCentral {
     public Map<String, Plugin> getPlugins() {
         return hudsonUpdateSiteMetadata.getPlugins();
     }
+    
+    public PluginCentralSecurity getSecurity() {
+        return security;
+    }
+    
+    public HttpResponse doLogin(@QueryParameter("j_username") String username, @QueryParameter("j_password") String password) { 
+        try {
+            security.login(username, password);
+            return HttpResponses.ok();
+        } catch (Exception exc) {
+            return HttpResponses.error(HttpServletResponse.SC_BAD_REQUEST, "Failed to login. " + exc.getLocalizedMessage());
+        }
+    } 
+    
+    public HttpResponse doLogout() throws IOException { 
+        try {
+            security.logout();
+            return HttpResponses.ok();
+        } catch (Exception exc) {
+            return HttpResponses.error(HttpServletResponse.SC_BAD_REQUEST, "Failed to logout. " + exc.getLocalizedMessage());
+        }
+    } 
 
     public HttpResponse doDeletePlugin(@QueryParameter("name") String name) throws IOException {
+        if (!PluginCentralSecurity.getInstance().isPermitted(PluginCentralSecurity.PLUGIN_DELETE)){
+           return HttpResponses.error(HttpServletResponse.SC_UNAUTHORIZED, "Not authorized to delete plugin." + name);
+        }
         if (hudsonUpdateSiteMetadata.deletePlugin(name)) {
             persistJson();
             return HttpResponses.ok();
@@ -87,6 +115,9 @@ public class PluginCentral {
             @QueryParameter("developers") String developers,
             @QueryParameter("dependencies") String dependencies,
             @QueryParameter("labels") String labels) {
+        if (!PluginCentralSecurity.getInstance().isPermitted(PluginCentralSecurity.PLUGIN_UPDATE)){
+           return HttpResponses.error(HttpServletResponse.SC_UNAUTHORIZED, "Not authorized to update plugin." + name);
+        }
         try {
             Plugin plugin = hudsonUpdateSiteMetadata.findPlugin(name);
             plugin.setName(name);
@@ -112,6 +143,9 @@ public class PluginCentral {
     }
 
     public HttpResponse doUploadPlugin(StaplerRequest request) throws IOException, ServletException {
+        if (!PluginCentralSecurity.getInstance().isPermitted(PluginCentralSecurity.PLUGIN_UPLOAD)){
+           return HttpResponses.error(HttpServletResponse.SC_UNAUTHORIZED, "Not authorized to upload plugin.");
+        }
         try {
             List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
             for (FileItem fileItem : items) {

@@ -151,3 +151,34 @@ p {
     display: none;
 }
 
+/* === Login relayed ==== */
+
+#loginLink{
+    margin-top: -30px;
+    font-size: 14px;
+    float: right;
+}
+
+#logoutLink{
+    margin-top: -30px;
+    font-size: 14px;
+    float: right;
+}
+
+#loginError, #loginMsg {
+    text-align:center;
+    font-weight:bold;
+}
+#loginMsg {
+    color: black;
+    display: none;
+}
+
+#loginError {
+    color: red;
+    display: none;
+}
+
+#loginForm input {
+    width: 150px;
+}
