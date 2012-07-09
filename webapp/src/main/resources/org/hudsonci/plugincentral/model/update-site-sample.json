@@ -1,0 +1,9 @@
+
+{  
+    "update-site-local-path" : "/var/tmp/hudson",
+    "update-center-json-local-path" : "/var/tmp/hudson/update-center.json",
+    "plugins-temp-download-local-path-root" : "/var/tmp/hudson/hudson-plugins",
+    "plugins-download-local-path-root" : "/var/tmp/hudson/tmp-plugins",
+    "shiro-security-ini-local-path" : "var/tmp/hudson/shiro-security.ini",
+    "plugins-download-root-url" : "http://hudson-ci.org/downloads/plugins"
+}

@@ -1,0 +1,184 @@
+/* 
+    Document   : plugin-central
+    Created on : Jun 29, 2012, 4:48:22 PM
+    Author     : Winston  Prakash <winston.prakash@oracle.com>
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+
+#feedback { font-size: 1.4em; }
+#selectable .ui-selecting { background: #FECA40; }
+#selectable .ui-selected { background: #F39814; color: white; }
+#selectable { list-style-type: none; margin: 0; padding: 2px; }
+#selectable li { margin: 3px; padding: 0.4em; height: 12px; }
+
+body {
+    margin-top: 10px;   
+}
+
+body, table, form, input, td, th, p, textarea, select{
+    font-size: 12px;
+}
+
+textarea {
+    resize:none;
+}
+
+p {
+    font-size: 14px;
+}
+
+.container {
+    margin: auto;
+    padding-left: 0px;
+    padding-bottom: 20px;
+    width: 950px;
+}
+
+.container h3 {
+    font-size: 18px;
+    margin-left: 50px;
+    margin-top: 10px; 
+    margin-bottom: 10px;
+    color: #863566;
+}
+
+#headerLeft {
+    width: 450px;
+    float:left;
+}
+
+#headerRight{
+    margin-left: 480px;
+    width: 450px;
+}
+
+#pluginList{
+    float:left;
+    border: 1px solid #BC8F8F; 
+    background-color: rgb(235, 236, 228); 
+    height: 750px; width: 256px;
+    border-radius: 5px 5px 5px 5px;
+}
+
+#pluginListScroll {
+    width: 250px;
+    height: 740px;
+    overflow: auto;
+    border-right-width: 5px; 
+    border-bottom-width: 5px; 
+    margin-top: 5px; 
+    margin-left: 2px;
+}
+
+#pluginInfoContainer{
+    border: 1px solid #BC8F8F;
+    margin-left: 270px;
+    height: 750px;
+    border-radius: 5px 5px 5px 5px;
+}
+
+#pluginDetail > label{
+    float: left;
+    width: 150px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+#pluginDetail > input, textarea{
+    width: 500px;
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+#pluginDetail > textarea{
+    width: 500px;
+    height: 150px;
+}
+
+#pluginDetail > span{
+    font-size:.75em;
+}
+
+#updateForm{
+    margin-left:10px;
+}
+
+#updateButton{
+    margin-left: 200px;
+    margin-top: 5px;
+    width: 70px;
+    display: none;
+}
+
+#deleteButton{
+    margin-left: 20px;
+    margin-top: 5px;
+    width: 70px;
+    display: none;
+}
+
+#uploadLink{
+    font-size: 14px;
+    margin-top: 10px;
+    float: right;
+}
+
+#uploadButton{
+    width: 60px;
+    height: 18px;
+}
+
+#pluginUpdateMsg{
+    margin-left: 10px;
+    font-size: 12px;
+}
+
+#pluginUploadMsg{
+    font-size: 12px;
+}
+
+#dialog-confirm{
+    display: none;
+}
+
+#dialog-upload{
+    display: none;
+}
+
+#progressbar{
+    display: none;
+}
+
+/* === Login relayed ==== */
+
+#loginLink{
+    margin-top: -30px;
+    font-size: 14px;
+    float: right;
+}
+
+#logoutLink{
+    margin-top: -30px;
+    font-size: 14px;
+    float: right;
+}
+
+#loginError, #loginMsg {
+    text-align:center;
+    font-weight:bold;
+}
+#loginMsg {
+    color: black;
+    display: none;
+}
+
+#loginError {
+    color: red;
+    display: none;
+}
+
+#loginForm input {
+    width: 150px;
+}
