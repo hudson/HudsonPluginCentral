@@ -58,7 +58,7 @@ public class StartJetty {
 
         WebAppContext context = new WebAppContext();
 
-        context.setContextPath("/");
+        context.setContextPath("/PluginCentral");
         context.setDescriptor(location.toExternalForm() + "/WEB-INF/web.xml");
         context.setServer(server);
         context.setWar(location.toExternalForm());
