@@ -4,30 +4,70 @@
     <div id="pluginDetail">
         <label for="name">Name</label>
         <input readonly="true" type="text" name="name" value="${it.name}" />
-         
+         <br/>
 
         <label for="title">Title</label>
         <input type="text" name="title" value="${it.title}" />
+         <br/>
          
             
         <label for="excerpt">Description</label>
         <textarea name="excerpt">
             ${it.excerpt}
         </textarea>
-         
+         <br/>
             
         <label for="version">Version</label>
         <input type="text" name="version" value="${it.version}" />
-         
+        <br/>
+        
+        <label for="type">Plugin Type</label>
+        <select name="type">
+            <j:if test="${it.type.equals('mandatory')}">
+                <option value="mandatory" selected="selected">Mandatory</option>
+            </j:if>
+            <j:if test="${!it.type.equals('mandatory')}">
+                <option value="mandatory">Mandatory</option>
+            </j:if>
             
+            <j:if test="${it.type.equals('featured')}">
+                <option value="featured" selected="selected">Featured</option>
+            </j:if>
+            <j:if test="${!it.type.equals('featured')}">
+                <option value="featured">Featured</option>
+            </j:if>
+            
+            <j:if test="${it.type.equals('recommended')}">
+                <option value="recommended" selected="selected">Recommended</option>
+            </j:if>
+            <j:if test="${!it.type.equals('recommended')}">
+                <option value="recommended">Recommended</option>
+            </j:if>
+            
+            <j:if test="${it.type.equals('others')}">
+                <option value="others" selected="selected">Others</option>
+            </j:if>
+            <j:if test="${!it.type.equals('others')}">
+                <option value="others">Others</option>
+            </j:if>
+            
+            <j:if test="${it.type.equals('disabled')}">
+                <option value="disabled" selected="selected">Disabled</option>
+            </j:if>
+            <j:if test="${!it.type.equals('disabled')}">
+                <option value="disabled">Disabled</option>
+            </j:if>
+        </select> 
+        <br/>
+        <br/>
             
         <label for="previousVersion">Previous Version</label>
         <input type="text" name="previousVersion" value="${it.previousVersion}" />
-         
+        <br/>
             
         <label for="buildDate">Build Date</label>
         <input type="text" name="buildDate" value="${it.buildDate}" />
-        
+         <br/>
             
         <label for="dependencies">Dependent Plugins</label>
         <input type="text" name="dependencies" value="${it.dependenciesAsString}" />
@@ -49,21 +89,23 @@
             
         <label for="releaseTimestamp">Current Release Timestamp</label>
         <input type="text" name="releaseTimestamp" value="${it.releaseTimestamp}" />
-         
+        <br/>
             
         <label for="previousTimestamp">Previous Release Timestamp</label>
         <input type="text" name="previousTimestamp" value="${it.previousTimestamp}" />
-            
+        <br/>   
+        
         <label for="url">Download URL</label>
         <input type="text" name="url" value="${it.url}" />
-         
+        <br/>
             
         <label for="wiki">Wiki URL</label>
         <input type="text" name="wiki" value="${it.wiki}" />
-         
+        <br/> 
             
         <label for="scm">SCM URL</label>
         <input type="text" name="scm" value="${it.scm}" />
+        <br/>
     </div>
     
 </j:jelly>

@@ -33,6 +33,7 @@ public class Plugin {
     private String version;
     private String wiki;
     private String previousVersion;
+    private String type = "others";
 
     public void set(Plugin newPlugin) {
         if (CollectionUtils.isNotEmpty(newPlugin.getLabels())) {
@@ -325,5 +326,13 @@ public class Plugin {
             // couldn't parse as the version number.
             return false;
         }
+    }
+    
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }

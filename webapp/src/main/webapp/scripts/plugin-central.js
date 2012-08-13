@@ -16,10 +16,12 @@ jQuery(document).ready(function() {
         filesToUpload = e.target.files;
     });
 
+    jQuery('#updateButton').button();
     jQuery('#updateButton').click(function() {
         submitUpdateForm();
     });
-            
+    
+    jQuery('#deleteButton').button();
     jQuery('#deleteButton').click(function() {
         jQuery('#dialog-confirm').dialog({
             resizable: false,
@@ -84,7 +86,6 @@ jQuery(document).ready(function() {
             buttons: {
                 'Login': function() {
                     submitLoginForm();
-                    jQuery( this ).dialog("close");
                 },
                 Cancel: function() {
                     jQuery('#j_username').attr({
@@ -128,8 +129,9 @@ function submitLoginForm(){
         success: function(){
             window.location.href=".";
         },
-        error: function(){
+        error: function(msg){
             jQuery('#loginError').show();
+            jQuery('#loginError').text(msg.responseText);
             jQuery('#loginMsg').hide();
         },
         dataType: "html"
@@ -175,7 +177,8 @@ function submitDeleteForm(){
             jQuery("#pluginInfo").empty();
             jQuery("#pluginInfo").append('<p style="font-size: 18px;">Plugin <span style="font-size: 18px; font-weight:bold">' + jQuery(selected).text() +'</span> successfully deleted </p>');
         },
-        error: function(){
+        error: function(msg){
+            jQuery('#loginError').text(msg.responseText);
             jQuery("#errorMsg").show();
         }
     }); 
@@ -190,8 +193,8 @@ function submitUpdateForm(){
         success: function(){
             showMessage("Plugin updated successfully.", false, false);
         },
-        error: function(){
-            showMessage("Plugin updated failed.", true, false);
+        error: function(msg){
+            showMessage(msg.responseText, true, false);
         }
     }); 
 }

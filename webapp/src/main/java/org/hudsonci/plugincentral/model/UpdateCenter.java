@@ -2,6 +2,7 @@ package org.hudsonci.plugincentral.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonWriteNullProperties;
 
@@ -15,7 +16,7 @@ public class UpdateCenter {
     private Core core;
     private String id = "default";
     private String connectionCheckUrl  = "http://www.google.com";
-    private Map<String, Plugin> plugins = new HashMap<String, Plugin>();
+    private Map<String, Plugin> plugins = new TreeMap<String, Plugin>(String.CASE_INSENSITIVE_ORDER);
     private Signature signature = new Signature();
 
     public String getUpdateCenterVersion() {

@@ -175,8 +175,10 @@ public class HpiProcessor {
                 
         String pluginPath = "/" + hudsonPluginMavenPom.getArtifactId() + "/" + getVersion() + "/" + hudsonPluginMavenPom.getArtifactId()  + ".hpi";
         
+        File downloadFile = new File(downloadPath, pluginPath);
+        downloadFile.getParentFile().mkdirs();
         FileUtils.copyFile(hpiFile, new File(downloadPath, pluginPath));
-
+        hpiFile.delete();
         return downloadSiteUrl + pluginPath;
     }
 

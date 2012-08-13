@@ -12,6 +12,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
+import org.hudsonci.plugincentral.model.Plugin;
 import org.hudsonci.plugincentral.model.UpdateCenter;
 import org.hudsonci.plugincentral.model.UpdateSite;
 
@@ -65,10 +70,15 @@ public class Utils {
         return jsonObjectMapper.readValue(jsonString, valueType);
     }
 
-    public static String getAsString(UpdateCenter updateSiteMetadata) throws IOException {
-
+    public static String getAsString(UpdateCenter updateCenter) throws IOException {
+        // Sort the plugins first
+        Map<String, Plugin> plugins = new TreeMap<String, Plugin>(String.CASE_INSENSITIVE_ORDER);
+        for (String name : updateCenter.getPlugins().keySet()){
+            plugins.put(name, updateCenter.findPlugin(name));
+        }
+        updateCenter.setPlugins(plugins);
         Writer writer = new StringWriter();
-        jsonObjectMapper.writeValue(writer, updateSiteMetadata);
+        jsonObjectMapper.writeValue(writer, updateCenter);
         return writer.toString();
     }
 

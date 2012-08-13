@@ -4,6 +4,7 @@ import java.io.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeSet;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -12,7 +13,6 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.hudsonci.plugincentral.model.HpiProcessor;
 import org.hudsonci.plugincentral.model.Plugin;
 import org.hudsonci.plugincentral.model.UpdateSite;
@@ -56,7 +56,9 @@ public class PluginCentral {
     }
 
     public Set<String> getPluginNames() {
-        return updateCenter.getPlugins().keySet();
+        Set<String> sortedNames = new TreeSet(String.CASE_INSENSITIVE_ORDER);
+        sortedNames.addAll(updateCenter.getPlugins().keySet());
+        return sortedNames;
     }
 
     public Map<String, Plugin> getPlugins() {
@@ -82,9 +84,11 @@ public class PluginCentral {
     public HttpResponse doLogin(@QueryParameter("j_username") String username, @QueryParameter("j_password") String password) {
         try {
             getSecurity().login(username, password);
+            System.out.println("User " + username + " successfully logged in.");
             return HttpResponses.ok();
         } catch (Exception exc) {
-            return HttpResponses.error(HttpServletResponse.SC_BAD_REQUEST, "Failed to login. " + exc.getLocalizedMessage());
+            System.out.println("Login failed for user " + username + ". " + exc.getLocalizedMessage());
+            return new ErrorHttpResponse("Failed to login " + username + ". " + exc.getLocalizedMessage());
         }
     }
 
@@ -99,13 +103,13 @@ public class PluginCentral {
 
     public HttpResponse doDeletePlugin(@QueryParameter("name") String name) throws IOException {
         if (!getSecurity().isPermitted(PluginCentralSecurity.PLUGIN_DELETE)) {
-            return HttpResponses.error(HttpServletResponse.SC_UNAUTHORIZED, "Not authorized to delete plugin." + name);
+            return new ErrorHttpResponse("Not authorized to delete plugin." + name);
         }
         if (updateCenter.deletePlugin(name)) {
             persistJson();
             return HttpResponses.ok();
         } else {
-            return HttpResponses.error(HttpServletResponse.SC_BAD_REQUEST, "Failed to delete plugin " + name);
+            return new ErrorHttpResponse("Failed to delete plugin " + name);
         }
     }
 
@@ -115,6 +119,7 @@ public class PluginCentral {
             @QueryParameter("excerpt") String excerpt,
             @QueryParameter("url") String url,
             @QueryParameter("version") String version,
+            @QueryParameter("type") String type,
             @QueryParameter("wiki") String wiki,
             @QueryParameter("previousVersion") String previousVersion,
             @QueryParameter("scm") String scm,
@@ -126,7 +131,7 @@ public class PluginCentral {
             @QueryParameter("dependencies") String dependencies,
             @QueryParameter("labels") String labels) {
         if (!getSecurity().isPermitted(PluginCentralSecurity.PLUGIN_UPDATE)) {
-            return HttpResponses.error(HttpServletResponse.SC_UNAUTHORIZED, "Not authorized to update plugin." + name);
+            return new ErrorHttpResponse( "Not authorized to update plugin." + name);
         }
         try {
             Plugin plugin = updateCenter.findPlugin(name);
@@ -135,6 +140,7 @@ public class PluginCentral {
             plugin.setTitle(title);
             plugin.setUrl(url);
             plugin.setVersion(version);
+            plugin.setType(type);
             plugin.setWiki(wiki);
             plugin.setPreviousVersion(previousVersion);
             plugin.setScm(scm);
@@ -147,14 +153,14 @@ public class PluginCentral {
             plugin.setLabelsAsString(labels);
             persistJson();
         } catch (Exception ex) {
-            return HttpResponses.error(HttpServletResponse.SC_BAD_REQUEST, ex);
+            return new ErrorHttpResponse(ex.getLocalizedMessage());
         }
         return HttpResponses.ok();
     }
 
     public HttpResponse doUploadPlugin(StaplerRequest request) throws IOException, ServletException {
         if (!getSecurity().isPermitted(PluginCentralSecurity.PLUGIN_UPLOAD)) {
-            return HttpResponses.error(HttpServletResponse.SC_UNAUTHORIZED, "Not authorized to upload plugin.");
+            return new ErrorHttpResponse( "Not authorized to upload plugin.");
         }
         try {
             List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
