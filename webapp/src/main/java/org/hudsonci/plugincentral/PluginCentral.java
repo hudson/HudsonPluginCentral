@@ -15,8 +15,8 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.hudsonci.plugincentral.model.HpiProcessor;
 import org.hudsonci.plugincentral.model.Plugin;
-import org.hudsonci.plugincentral.model.UpdateSite;
 import org.hudsonci.plugincentral.model.UpdateCenter;
+import org.hudsonci.plugincentral.model.UpdateSite;
 import org.hudsonci.plugincentral.security.PluginCentralSecurity;
 import org.kohsuke.stapler.*;
 
@@ -131,7 +131,7 @@ public class PluginCentral {
             @QueryParameter("dependencies") String dependencies,
             @QueryParameter("labels") String labels) {
         if (!getSecurity().isPermitted(PluginCentralSecurity.PLUGIN_UPDATE)) {
-            return new ErrorHttpResponse( "Not authorized to update plugin." + name);
+            return new ErrorHttpResponse("Not authorized to update plugin." + name);
         }
         try {
             Plugin plugin = updateCenter.findPlugin(name);
@@ -160,7 +160,7 @@ public class PluginCentral {
 
     public HttpResponse doUploadPlugin(StaplerRequest request) throws IOException, ServletException {
         if (!getSecurity().isPermitted(PluginCentralSecurity.PLUGIN_UPLOAD)) {
-            return new ErrorHttpResponse( "Not authorized to upload plugin.");
+            return new ErrorHttpResponse("Not authorized to upload plugin.");
         }
         try {
             List<FileItem> items = new ServletFileUpload(new DiskFileItemFactory()).parseRequest(request);
@@ -173,7 +173,28 @@ public class PluginCentral {
                     File uploadedPluginFile = new File(tempPluginsDir, fileName);
                     fileItem.write(uploadedPluginFile);
                     Plugin newPlugin = hpiProcessor.process(uploadedPluginFile);
-                    updateCenter.add(newPlugin);
+                    Plugin plugin = updateCenter.findPlugin(newPlugin.getName());
+                    if (plugin != null) {
+                        plugin.setExcerpt(newPlugin.getExcerpt());
+                        plugin.setTitle(newPlugin.getTitle());
+                        plugin.setUrl(newPlugin.getUrl());
+                        plugin.setPreviousVersion(plugin.getVersion());
+                        plugin.setVersion(newPlugin.getVersion());
+                        plugin.setType(newPlugin.getType());
+                        plugin.setWiki(newPlugin.getWiki());
+                        plugin.setScm(newPlugin.getScm());
+                        plugin.setRequiredCore(newPlugin.getRequiredCore());
+                        plugin.setPreviousTimestamp(plugin.getReleaseTimestamp());
+                        plugin.setReleaseTimestamp(newPlugin.getReleaseTimestamp());
+                        plugin.setBuildDate(newPlugin.getBuildDate());
+                        plugin.setDependenciesAsString(newPlugin.getDependenciesAsString());
+                        plugin.setDevelopersAsString(newPlugin.getDevelopersAsString());
+                        plugin.setLabelsAsString(newPlugin.getLabelsAsString());
+                        newPlugin = plugin;
+                    } else {
+                        updateCenter.add(newPlugin);
+                    }
+
                     fileItem.delete();
                     persistJson();
                     return HttpResponses.plainText(newPlugin.getName() + " uploaded.");
