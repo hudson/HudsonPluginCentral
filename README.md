@@ -39,13 +39,13 @@ shiro-security.ini may have the following
 
 [users]
 # user 'sysadmin' with sysadmin privilege
-sysadmin = <sysadmin-password>, sysadmin
+sysadmin = sysadmin-password, sysadmin
 
 # user 'admin' with admin privilege
-admin = <admin-password>, admin
+admin = admin-password, admin
 
 # user 'hudson' as 'developer' role
-hudson = <developer-password>, developer
+hudson = developer-password, developer
 
 
 [roles]
