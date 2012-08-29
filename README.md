@@ -18,6 +18,9 @@ java -jar plugin-central.war --httpPort=9696 --update-site=update-site.json
 
 Metadata information provided in the update-site.json are
 
+<pre><code>
+
+
 {  
     "update-site-local-path" : "/opt/hudson/update-site3",
     "update-center-json-local-path" : "/opt/hudson/update-site3/update-center.json",
@@ -27,7 +30,12 @@ Metadata information provided in the update-site.json are
     "plugins-download-root-url" : "http://hudson-ci.org/update-center3/downloads/plugins"
 }
 
+</code><pre>
+
+
 shiro-security.ini may have the following
+
+<pre><code>
 
 [users]
 # user 'sysadmin' with sysadmin privilege
@@ -48,6 +56,8 @@ admin = plugin:*
 
 # The 'developer' role can update plugins
 developer = plugin:update
+
+</code></pre>
 
 
 
