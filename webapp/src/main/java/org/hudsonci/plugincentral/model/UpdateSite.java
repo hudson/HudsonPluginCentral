@@ -1,33 +1,48 @@
-
 package org.hudsonci.plugincentral.model;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
 /**
  * Update Site information
+ *
  * @author Winston Prakash <winston.prakash@oracle.com>
  */
 public class UpdateSite {
+
+    private String updateSiteRoot;
     private String updateSiteLocalPath;
     private String updateCenterJsonLocalPath;
     private String pluginsTempDownloadLocalPathRoot;
     private String pluginsDownloadLocalPathRoot;
     private String pluginsDownloadRootUrl;
     private String shiroSecurityIniLocalPath;
+    private String l10nStorePath;
+    private String usageStatsStorePath;
+    private String usageStatsPrivateKey;
 
-    @JsonProperty("shiro-security-ini-local-path")
+    @JsonProperty("update-site-root")
+    public void setUpdateSiteRoot(String updateSiteRoot) {
+        this.updateSiteRoot = updateSiteRoot;
+    }
+
+    public String getUpdateSiteRoot() {
+        if (!updateSiteRoot.endsWith("/")) {
+            updateSiteRoot = updateSiteRoot + "/";
+        }
+        return updateSiteRoot;
+    }
+
     public String getShiroSecurityIniLocalPath() {
-        return shiroSecurityIniLocalPath;
+        return getUpdateSiteRoot() + shiroSecurityIniLocalPath;
     }
 
     @JsonProperty("shiro-security-ini-local-path")
     public void setShiroSecurityIniLocalPath(String shiroSecurityIniLocalPath) {
         this.shiroSecurityIniLocalPath = shiroSecurityIniLocalPath;
     }
-   
-    @JsonProperty("plugins-download-local-path-root")
+
     public String getPluginsDownloadLocalPathRoot() {
-        return pluginsDownloadLocalPathRoot;
+        return getUpdateSiteRoot() + pluginsDownloadLocalPathRoot;
     }
 
     @JsonProperty("plugins-download-local-path-root")
@@ -35,7 +50,6 @@ public class UpdateSite {
         this.pluginsDownloadLocalPathRoot = pluginsDownloadLocalPathRoot;
     }
 
-    @JsonProperty("plugins-download-root-url")
     public String getPluginsDownloadRootUrl() {
         return pluginsDownloadRootUrl;
     }
@@ -45,9 +59,8 @@ public class UpdateSite {
         this.pluginsDownloadRootUrl = pluginsDownloadRootUrl;
     }
 
-    @JsonProperty("plugins-temp-download-local-path-root")
     public String getPluginsTempDownloadLocalPathRoot() {
-        return pluginsTempDownloadLocalPathRoot;
+        return getUpdateSiteRoot() + pluginsTempDownloadLocalPathRoot;
     }
 
     @JsonProperty("plugins-temp-download-local-path-root")
@@ -55,9 +68,8 @@ public class UpdateSite {
         this.pluginsTempDownloadLocalPathRoot = pluginsTempDownloadLocalPathRoot;
     }
 
-    @JsonProperty("update-center-json-local-path")
     public String getUpdateCenterJsonLocalPath() {
-        return updateCenterJsonLocalPath;
+        return getUpdateSiteRoot() + updateCenterJsonLocalPath;
     }
 
     @JsonProperty("update-center-json-local-path")
@@ -65,13 +77,39 @@ public class UpdateSite {
         this.updateCenterJsonLocalPath = updateCenterJsonLocalPath;
     }
 
-    @JsonProperty("update-site-local-path")
     public String getUpdateSiteLocalPath() {
-        return updateSiteLocalPath;
+        return getUpdateSiteRoot() + updateSiteLocalPath;
     }
 
     @JsonProperty("update-site-local-path")
     public void setUpdateSiteLocalPath(String updateSiteLocalPath) {
         this.updateSiteLocalPath = updateSiteLocalPath;
+    }
+
+    public String getL10nStorePath() {
+        return getUpdateSiteRoot() + l10nStorePath;
+    }
+
+    @JsonProperty("l10n-store-path")
+    public void setL10nStorePath(String l10nStorePath) {
+        this.l10nStorePath = l10nStorePath;
+    }
+    
+    public String getUsageStatsStorePath() {
+        return getUpdateSiteRoot() + usageStatsStorePath;
+    }
+
+    @JsonProperty("usage-stats-store-path")
+    public void setUsageStatsStorePath(String usageStatsStorePath) {
+        this.usageStatsStorePath = usageStatsStorePath;
+    }
+    
+    public String getUsageStatsPrivateKey() {
+        return usageStatsPrivateKey;
+    }
+
+    @JsonProperty("usage-stats-private-key")
+    public void setUsageStatsPrivateKey(String usageStatsPrivateKey) {
+        this.usageStatsPrivateKey = usageStatsPrivateKey;
     }
 }

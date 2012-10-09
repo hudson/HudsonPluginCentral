@@ -12,10 +12,13 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import org.hudsonci.plugincentral.model.Plugin;
 import org.hudsonci.plugincentral.model.UpdateCenter;
 import org.hudsonci.plugincentral.model.UpdateSite;
@@ -131,5 +134,49 @@ public class Utils {
             return getFileName(filePath.substring(idx + 1));
         }
         return filePath;
+    }
+    
+    /**
+     * Converts a string into 128-bit AES key.
+     * @since 1.308
+     */
+    public static SecretKey toAes128Key(String s) {
+        try {
+            // turn secretKey into 256 bit hash
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            digest.reset();
+            digest.update(s.getBytes("UTF-8"));
+
+            // Due to the stupid US export restriction JDK only ships 128bit version.
+            return new SecretKeySpec(digest.digest(), 0, 128 / 8, "AES");
+        } catch (NoSuchAlgorithmException e) {
+            throw new Error(e);
+        } catch (UnsupportedEncodingException e) {
+            throw new Error(e);
+        }
+    }
+
+    public static String toHexString(byte[] data, int start, int len) {
+        StringBuilder buf = new StringBuilder();
+        for (int i = 0; i < len; i++) {
+            int b = data[start + i] & 0xFF;
+            if (b < 16) {
+                buf.append('0');
+            }
+            buf.append(Integer.toHexString(b));
+        }
+        return buf.toString();
+    }
+
+    public static String toHexString(byte[] bytes) {
+        return toHexString(bytes, 0, bytes.length);
+    }
+
+    public static byte[] fromHexString(String data) {
+        byte[] r = new byte[data.length() / 2];
+        for (int i = 0; i < data.length(); i += 2) {
+            r[i / 2] = (byte) Integer.parseInt(data.substring(i, i + 2), 16);
+        }
+        return r;
     }
 }

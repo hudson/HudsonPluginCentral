@@ -97,6 +97,10 @@ public class Plugin {
         StringBuilder deps = new StringBuilder();
 
         for (Dependency dep : dependencies) {
+            String depName = dep.getName();
+            if ((depName == null) || "".equals(depName.trim())){
+                continue;
+            }
             deps.append("name:");
             deps.append(dep.getName());
             deps.append(";");
@@ -138,14 +142,23 @@ public class Plugin {
         StringBuilder devs = new StringBuilder();
 
         for (Developer dev : developers) {
-            devs.append("name:");
-            devs.append(dev.getName());
-            devs.append(";");
-            devs.append("id:");
-            devs.append(dev.getDeveloperId());
-            devs.append(";");
-            devs.append("email:");
-            devs.append(dev.getEmail());
+            String devName = dev.getName();
+            if ((devName != null) && !"".equals(devName.trim())){
+                devs.append("name:");
+                devs.append(devName);
+                devs.append(";");
+            }
+            String devId = dev.getDeveloperId();
+            if ((devId != null) && !"".equals(devId.trim())) {
+                devs.append("id:");
+                devs.append(devId);
+                devs.append(";");
+            }
+            String devEmail = dev.getEmail();
+            if ((devEmail != null) && !"".equals(devEmail.trim())) {
+                devs.append("email:");
+                devs.append(devEmail);
+            }
             devs.append(",");
         }
         return fixAndGetString(devs);

@@ -13,11 +13,13 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+import org.hudsonci.plugincentral.l10n.L10nSubmission;
 import org.hudsonci.plugincentral.model.HpiProcessor;
 import org.hudsonci.plugincentral.model.Plugin;
 import org.hudsonci.plugincentral.model.UpdateCenter;
 import org.hudsonci.plugincentral.model.UpdateSite;
 import org.hudsonci.plugincentral.security.PluginCentralSecurity;
+import org.hudsonci.plugincentral.stats.UsageStats;
 import org.kohsuke.stapler.*;
 
 /**
@@ -32,9 +34,13 @@ public class PluginCentral {
     private final HpiProcessor hpiProcessor;
     private final UpdateSite updateSite;
     private final String securityIniPath;
+    
+    private final L10nSubmission l10nSubmission;
+    
+    private final UsageStats usageStats;
 
     public PluginCentral() throws IOException {
-        String updateSiteJsonPath = System.getProperty("update-site-json", "/var/tmp/hudson/update-site.json");
+        String updateSiteJsonPath = System.getProperty("update-site-json", "/Users/winstonp/Hudson/PluginCentral-test/update-site.json");
         String updateSiteJson = FileUtils.readFileToString(new File(updateSiteJsonPath));
 
         updateSite = Utils.parseUpdateSite(updateSiteJson);
@@ -52,7 +58,11 @@ public class PluginCentral {
         tempPluginsDir = new File(updateSite.getPluginsTempDownloadLocalPathRoot());
         tempPluginsDir.mkdirs();
         hpiProcessor = new HpiProcessor(updateSite.getPluginsDownloadRootUrl(), updateSite.getPluginsDownloadLocalPathRoot());
-        securityIniPath = "file:" + updateSite.getShiroSecurityIniLocalPath();;
+        securityIniPath = "file:" + updateSite.getShiroSecurityIniLocalPath();
+      
+        l10nSubmission = new L10nSubmission(updateSite.getL10nStorePath());
+        
+        usageStats = new UsageStats(updateSite.getUsageStatsStorePath(), updateSite.getUsageStatsPrivateKey());
     }
 
     public Set<String> getPluginNames() {
@@ -79,6 +89,14 @@ public class PluginCentral {
             pluginCentralSecurity = new PluginCentralSecurity(securityIniPath);
         }
         return pluginCentralSecurity;
+    }
+    
+    public L10nSubmission getL10nSubmission() {
+        return l10nSubmission;
+    }
+    
+    public UsageStats getUsageStats() {
+        return usageStats;
     }
 
     public HttpResponse doLogin(@QueryParameter("j_username") String username, @QueryParameter("j_password") String password) {
