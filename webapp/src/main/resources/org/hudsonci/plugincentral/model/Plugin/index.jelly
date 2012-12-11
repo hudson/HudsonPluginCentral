@@ -23,11 +23,11 @@
         
         <label for="type">Plugin Type</label>
         <select name="type">
-            <j:if test="${it.type.equals('mandatory')}">
-                <option value="mandatory" selected="selected">Mandatory</option>
+            <j:if test="${it.type.equals('compatibility')}">
+                <option value="compatibility" selected="selected">Compatibility</option>
             </j:if>
-            <j:if test="${!it.type.equals('mandatory')}">
-                <option value="mandatory">Mandatory</option>
+            <j:if test="${!it.type.equals('compatibility')}">
+                <option value="compatibility">Compatibility</option>
             </j:if>
             
             <j:if test="${it.type.equals('featured')}">
