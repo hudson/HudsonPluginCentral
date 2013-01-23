@@ -22,12 +22,16 @@ Metadata information provided in the update-site.json are
 
 
 {  
-    "update-site-local-path" : "/opt/hudson/update-site3",
-    "update-center-json-local-path" : "/opt/hudson/update-site3/update-center.json",
-    "plugins-download-local-path-root" : "/opt/hudson/update-site3/downloads/plugins",
-    "plugins-temp-download-local-path-root" : "/opt/hudson/update-site3/tmp-plugins",
-    "shiro-security-ini-local-path" : "/opt/hudson/update-site3/shiro-security.ini",
-    "plugins-download-root-url" : "http://hudson-ci.org/update-center3/downloads/plugins"
+    "update-site-root" : "/opt/hudson/update-site3",
+    "update-site-local-path" : "",
+    "update-center-json-local-path" : "update-center.json",
+    "plugins-download-local-path-root" : "downloads/plugins",
+    "plugins-temp-download-local-path-root" : "tmp-plugins",
+    "shiro-security-ini-local-path" : "shiro-security.ini",
+    "l10n-store-path" : "l10n",
+    "plugins-download-root-url" : "http://hudson-ci.org/update-center3/downloads/plugins",
+    "usage-stats-store-path" : "stats",
+    "usage-stats-private-key" : "<Your private key>"
 }
 
 </code><pre>
