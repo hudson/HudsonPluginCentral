@@ -73,7 +73,8 @@ public class HpiProcessor {
         plugin.setDependencies(getDependencies());
         plugin.setUrl(getUrl());
         plugin.setVersion(getVersion()); 
-        plugin.setName(getName()); 
+        plugin.setName(getName());
+        plugin.setGroupId(getGroupId());
         plugin.setRequiredCore(getRequiredCore()); 
         plugin.setWiki(getWiki()); 
         plugin.setLabels(getLabels()); 
@@ -209,6 +210,10 @@ public class HpiProcessor {
 
     public String getName() {
         return hudsonPluginMavenPom.getArtifactId();
+    }
+    
+    public String getGroupId() {
+        return hudsonPluginMavenPom.getGroupId();
     }
 
     public String getRequiredCore() {
