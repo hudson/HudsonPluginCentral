@@ -24,6 +24,7 @@ public class Plugin {
     private List<Developer> developers = new ArrayList<Developer>();
     private String buildDate;
     private String name;
+    private String groupId;
     private String previousTimestamp;
     private String releaseTimestamp;
     private String requiredCore;
@@ -41,6 +42,9 @@ public class Plugin {
         }
         if (StringUtils.isNotBlank(newPlugin.getExcerpt())) {
             excerpt = newPlugin.getExcerpt();
+        }
+        if (StringUtils.isNotBlank(newPlugin.getGroupId())) {
+            groupId = newPlugin.getGroupId();
         }
         if (CollectionUtils.isNotEmpty(newPlugin.getDependencies())) {
             dependencies = newPlugin.getDependencies();
@@ -251,9 +255,17 @@ public class Plugin {
     public String getName() {
         return name;
     }
-
+    
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getGroupId() {
+        return groupId;
+    }
+    
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
     }
 
     public String getPreviousTimestamp() {
