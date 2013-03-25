@@ -213,7 +213,11 @@ public class HpiProcessor {
     }
     
     public String getGroupId() {
-        return hudsonPluginMavenPom.getGroupId();
+        String groupId = hudsonPluginMavenPom.getGroupId();
+        if (groupId == null) {
+          groupId = hudsonPluginMavenPom.getParent().getGroupId();
+        }
+        return groupId;
     }
 
     public String getRequiredCore() {
