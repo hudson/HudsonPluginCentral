@@ -21,6 +21,8 @@ import org.hudsonci.plugincentral.model.UpdateSite;
 import org.hudsonci.plugincentral.security.PluginCentralSecurity;
 import org.hudsonci.plugincentral.stats.UsageStats;
 import org.kohsuke.stapler.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Hudson Plugin Central
@@ -38,6 +40,8 @@ public class PluginCentral {
     private final L10nSubmission l10nSubmission;
     
     private final UsageStats usageStats;
+    
+    private final Logger logger = LoggerFactory.getLogger(PluginCentral.class);
 
     public PluginCentral() throws IOException {
         String updateSiteJsonPath = System.getProperty("update-site-json", "/Users/wjprakash/Hudson/PluginCentral-test/update-site.json");
@@ -105,7 +109,7 @@ public class PluginCentral {
             System.out.println("User " + username + " successfully logged in.");
             return HttpResponses.ok();
         } catch (Exception exc) {
-            System.out.println("Login failed for user " + username + ". " + exc.getLocalizedMessage());
+            logger.error("Login failed for user " + username + ". " + exc.getLocalizedMessage());
             return new ErrorHttpResponse("Failed to login " + username + ". " + exc.getLocalizedMessage());
         }
     }

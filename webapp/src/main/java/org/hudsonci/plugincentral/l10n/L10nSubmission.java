@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.zip.GZIPInputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The L10N submission from Hudson users are stored via this utility. Both the
@@ -28,6 +30,8 @@ import java.util.zip.GZIPInputStream;
  * @author Winston Prakash
  */
 public class L10nSubmission {
+    
+    private final Logger logger = LoggerFactory.getLogger(L10nSubmission.class);
 
     private String l10nStorePath;
 
@@ -53,7 +57,7 @@ public class L10nSubmission {
     }
 
     public void doSubmit(StaplerRequest req, StaplerResponse rsp) throws IOException {
-        System.out.println("Accepting L10n submission");
+        logger.info("Accepting L10n submission");
 
         Cookie c = findIDCookie(req);
         if (c == null) {

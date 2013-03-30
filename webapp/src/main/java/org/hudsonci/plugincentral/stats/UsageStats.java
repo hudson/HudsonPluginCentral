@@ -9,6 +9,8 @@ import java.util.Date;
 import org.apache.commons.io.FileUtils;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * The Usage Stats submission from Hudson users are stored via this utility.
@@ -16,6 +18,8 @@ import org.kohsuke.stapler.StaplerResponse;
  * @author Winston Prakash
  */
 public class UsageStats {
+    
+    private final Logger logger = LoggerFactory.getLogger(UsageStats.class);
 
     private String statsStorePath;
     private String privateKey;
@@ -27,7 +31,7 @@ public class UsageStats {
     }
 
     public void doSubmit(StaplerRequest req, StaplerResponse rsp) throws IOException {
-        System.out.println("Accepting Usage Stats submission");
+        logger.info("Accepting Usage Stats submission");
 
         handleSubmission(req.getQueryString());
 
