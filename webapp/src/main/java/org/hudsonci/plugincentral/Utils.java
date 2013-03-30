@@ -20,8 +20,9 @@ import java.util.TreeMap;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import org.hudsonci.plugincentral.model.Plugin;
-import org.hudsonci.plugincentral.model.UpdateCenter;
+import org.hudsonci.plugincentral.model.PluginUpdateCenter;
 import org.hudsonci.plugincentral.model.UpdateSite;
+import org.hudsonci.plugincentral.model.UpdateSiteList;
 
 /**
  * Update Center Utilities
@@ -35,7 +36,7 @@ public class Utils {
         jsonObjectMapper.configure(SerializationConfig.Feature.INDENT_OUTPUT, true);
     }
 
-    public static UpdateCenter parseFromUrl(String updateCenterURL) throws IOException {
+    public static PluginUpdateCenter parseFromUrl(String updateCenterURL) throws IOException {
         try {
             WebRequest webRequest = new WebRequest(updateCenterURL);
             WebResponse webResponse = webRequest.get();
@@ -61,19 +62,23 @@ public class Utils {
 
     }
 
-    public static UpdateCenter parseUpdateCenter(String jsonString) throws IOException {
-        return parse(jsonString, UpdateCenter.class);
+    public static PluginUpdateCenter parseUpdateCenter(String jsonString) throws IOException {
+        return parse(jsonString, PluginUpdateCenter.class);
     }
     
     public static UpdateSite parseUpdateSite(String jsonString) throws IOException {
         return parse(jsonString, UpdateSite.class);
     }
     
+    public static UpdateSiteList parseUpdateSiteList(String jsonString) throws IOException {
+        return parse(jsonString, UpdateSiteList.class);
+    }
+    
     public static <T extends Object> T parse(String jsonString, Class<T> valueType) throws IOException{
         return jsonObjectMapper.readValue(jsonString, valueType);
     }
 
-    public static String getAsString(UpdateCenter updateCenter) throws IOException {
+    public static String getAsString(PluginUpdateCenter updateCenter) throws IOException {
         // Sort the plugins first
         Map<String, Plugin> plugins = new TreeMap<String, Plugin>(String.CASE_INSENSITIVE_ORDER);
         for (String name : updateCenter.getPlugins().keySet()){

@@ -10,7 +10,7 @@
     </parent>
   
     <groupId>org.hudsonci.plugin-central</groupId>
-    <artifactId>PluginCentral3</artifactId>
+    <artifactId>PluginCentral</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>war</packaging>
 

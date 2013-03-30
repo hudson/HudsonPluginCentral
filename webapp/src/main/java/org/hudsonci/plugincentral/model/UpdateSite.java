@@ -9,6 +9,8 @@ import org.codehaus.jackson.annotate.JsonProperty;
  */
 public class UpdateSite {
 
+    private String name;
+
     private String updateSiteRoot;
     private String updateSiteLocalPath;
     private String updateCenterJsonLocalPath;
@@ -19,6 +21,14 @@ public class UpdateSite {
     private String l10nStorePath;
     private String usageStatsStorePath;
     private String usageStatsPrivateKey;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     @JsonProperty("update-site-root")
     public void setUpdateSiteRoot(String updateSiteRoot) {
@@ -94,7 +104,7 @@ public class UpdateSite {
     public void setL10nStorePath(String l10nStorePath) {
         this.l10nStorePath = l10nStorePath;
     }
-    
+
     public String getUsageStatsStorePath() {
         return getUpdateSiteRoot() + usageStatsStorePath;
     }
@@ -103,7 +113,7 @@ public class UpdateSite {
     public void setUsageStatsStorePath(String usageStatsStorePath) {
         this.usageStatsStorePath = usageStatsStorePath;
     }
-    
+
     public String getUsageStatsPrivateKey() {
         return usageStatsPrivateKey;
     }

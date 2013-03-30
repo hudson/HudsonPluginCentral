@@ -1,6 +1,5 @@
 package org.hudsonci.plugincentral.model;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import org.codehaus.jackson.annotate.JsonIgnore;
@@ -11,7 +10,7 @@ import org.codehaus.jackson.annotate.JsonWriteNullProperties;
  * @author Winston Prakash
  */
 @JsonWriteNullProperties(false)
-public class UpdateCenter {
+public class PluginUpdateCenter {
 
     private Core core;
     private String id = "default";

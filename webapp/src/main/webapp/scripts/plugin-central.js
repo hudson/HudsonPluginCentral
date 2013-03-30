@@ -4,15 +4,22 @@ jQuery.noConflict();
 var selected;
 var filesToUpload;
 
+var pageInitialized = false;
 jQuery(document).ready(function() {
-        
+
+    //To avoid multiple fire of document.ready
+    if (pageInitialized) {
+        return;
+    }
+    pageInitialized = true;
+
     jQuery("#progressbar").progressbar({
         value: 0
     });
-    
+
     jQuery("#progressbar").height(5);
-            
-    jQuery('#fileSelect').change(function(e){
+
+    jQuery('#fileSelect').change(function(e) {
         filesToUpload = e.target.files;
     });
 
@@ -20,34 +27,34 @@ jQuery(document).ready(function() {
     jQuery('#updateButton').click(function() {
         submitUpdateForm();
     });
-    
+
     jQuery('#deleteButton').button();
     jQuery('#deleteButton').click(function() {
         jQuery('#dialog-confirm').dialog({
             resizable: false,
-            height:185,
+            height: 185,
             width: 350,
             modal: true,
             buttons: {
                 'Delete': function() {
-                    jQuery( this ).dialog( "close" );
+                    jQuery(this).dialog("close");
                     submitDeleteForm();
                 },
                 Cancel: function() {
-                    jQuery( this ).dialog( "close" );
+                    jQuery(this).dialog("close");
                 }
             }
         });
     });
-    
+
     jQuery('#logoutLink').click(function() {
-         doLogout();
+        doLogout();
     });
-    
+
     jQuery('#uploadLink').click(function() {
         jQuery('#dialog-upload').dialog({
             resizable: false,
-            height:185,
+            height: 185,
             width: 450,
             modal: true,
             buttons: {
@@ -57,30 +64,30 @@ jQuery(document).ready(function() {
                     }
                 },
                 Cancel: function() {
-                    jQuery( this ).dialog("close");
+                    jQuery(this).dialog("close");
                 }
             }
         });
     });
-    
+
     jQuery("#selectable").selectable({
         selected: function(event, ui) {
             jQuery("#pluginUpdateMsg").hide();
             setButtonsVisibility(true)
             selected = jQuery(ui.selected);
             jQuery("#pluginInfo").load('plugins/' + jQuery(selected).text());
-        }    
+        }
     });
-    
+
     // select the first item
-    selectSelectableElement (jQuery("#selectable"), jQuery("#selectable").children(":eq(0)"));
-    
-    jQuery('#loginLink').click(function(e){
+    selectSelectableElement(jQuery("#selectable"), jQuery("#selectable").children(":eq(0)"));
+
+    jQuery('#loginLink').click(function(e) {
         jQuery('#loginError').hide();
         jQuery('#loginMsg').hide();
         jQuery('#loginDialog').dialog({
             resizable: false,
-            height:250,
+            height: 250,
             width: 350,
             modal: true,
             buttons: {
@@ -89,25 +96,25 @@ jQuery(document).ready(function() {
                 },
                 Cancel: function() {
                     jQuery('#j_username').attr({
-                        value:""
+                        value: ""
                     });
                     jQuery('#j_password').attr({
-                        value:""
+                        value: ""
                     });
-                    jQuery( this ).dialog("close");
+                    jQuery(this).dialog("close");
                 }
             }
         });
     });
-    
-    jQuery('#j_username').keypress(function(e){
-        if(e.which == 13){
+
+    jQuery('#j_username').keypress(function(e) {
+        if (e.which == 13) {
             submitLoginForm();
         }
     });
-            
-    jQuery('#j_password').keypress(function(e){
-        if(e.which == 13){
+
+    jQuery('#j_password').keypress(function(e) {
+        if (e.which == 13) {
             submitLoginForm();
         }
     });
@@ -115,10 +122,10 @@ jQuery(document).ready(function() {
     jQuery('#loginButton').click(function() {
         submitLoginForm();
     });
-            
+
 });
 
-function submitLoginForm(){
+function submitLoginForm() {
     jQuery('#loginError').hide();
     jQuery('#loginMsg').show();
     var dataString = jQuery("#loginForm").serialize();
@@ -126,102 +133,102 @@ function submitLoginForm(){
         type: 'POST',
         url: "login",
         data: dataString,
-        success: function(){
-            window.location.href=".";
+        success: function() {
+            window.location.href = ".";
         },
-        error: function(msg){
+        error: function(msg) {
             jQuery('#loginError').show();
             jQuery('#loginError').text(msg.responseText);
             jQuery('#loginMsg').hide();
         },
         dataType: "html"
-    }); 
+    });
 }
 
-function doLogout(){
-     
+function doLogout() {
+
     jQuery.ajax({
         type: 'POST',
         url: "logout",
-        success: function(){
-            window.location.href=".";
+        success: function() {
+            window.location.href = ".";
         },
-        error: function(){
-             
+        error: function() {
+
         }
-    }); 
+    });
 }
 
-function showLoginDialog(){
+function showLoginDialog() {
     jQuery.blockUI({
         message: jQuery('#loginDialog'),
-        css: { 
+        css: {
             width: '350px'
         },
-        title:  'Confirmation'
+        title: 'Confirmation'
     });
     jQuery('j_username').focus();
 }
 
-function submitDeleteForm(){
+function submitDeleteForm() {
     jQuery("#pluginUpdateMsg").hide();
     setButtonsVisibility(false)
     jQuery.ajax({
         type: 'POST',
         url: "deletePlugin",
         data: {
-            name:jQuery(selected).text()
+            name: jQuery(selected).text()
         },
-        success: function(){
+        success: function() {
             jQuery(selected).remove();
             jQuery("#pluginInfo").empty();
-            jQuery("#pluginInfo").append('<p style="font-size: 18px;">Plugin <span style="font-size: 18px; font-weight:bold">' + jQuery(selected).text() +'</span> successfully deleted </p>');
+            jQuery("#pluginInfo").append('<p style="font-size: 18px;">Plugin <span style="font-size: 18px; font-weight:bold">' + jQuery(selected).text() + '</span> successfully deleted </p>');
         },
-        error: function(msg){
+        error: function(msg) {
             jQuery('#loginError').text(msg.responseText);
             jQuery("#errorMsg").show();
         }
-    }); 
+    });
 }
 
-function submitUpdateForm(){
+function submitUpdateForm() {
     var dataString = jQuery("#updateForm").serialize();
     jQuery.ajax({
         type: 'POST',
         url: "updatePlugin",
         data: dataString,
-        success: function(){
+        success: function() {
             showMessage("Plugin updated successfully.", false, false);
         },
-        error: function(msg){
+        error: function(msg) {
             showMessage(msg.responseText, true, false);
         }
-    }); 
+    });
 }
 
-function showMessage(msg, error, upload){
+function showMessage(msg, error, upload) {
     var infoTxt;
-    
-    if (upload == true){
+
+    if (upload == true) {
         infoTxt = jQuery("#pluginUploadMsg");
-    }else{
+    } else {
         infoTxt = jQuery("#pluginUpdateMsg");
     }
     infoTxt.text(msg);
-    if (error == true){
-        infoTxt.css("color","red");
-    }else{
-        infoTxt.css("color","green");  
+    if (error == true) {
+        infoTxt.css("color", "red");
+    } else {
+        infoTxt.css("color", "green");
     }
     infoTxt.show();
 }
 
 
-function setButtonsVisibility(visible){
-    if (visible == true){
+function setButtonsVisibility(visible) {
+    if (visible == true) {
         jQuery("#updateButton").show();
         jQuery("#deleteButton").show();
-    }else{
+    } else {
         jQuery("#updateButton").hide();
         jQuery("#deleteButton").hide();
     }
@@ -243,7 +250,7 @@ function uploadFile(file) {
         xhr.onreadystatechange = function(e) {
             if (xhr.readyState == 4) {
                 jQuery("#progressbar").hide();
-                if (xhr.status == 200){
+                if (xhr.status == 200) {
                     showMessage("Plugin " + file.name + " sucessfully uploaded.");
                     var response = xhr.responseText;
                     var pluginName = response.split(" ")[0];
@@ -253,8 +260,8 @@ function uploadFile(file) {
                     var pluginItem = '<li class="ui-widget-content" title="' + pluginName + '">' + pluginName + '</li>';
                     jQuery(pluginItem).appendTo(jQuery('#selectable'));
 
-                // Add the plugin to the selectable
-                }else{
+                    // Add the plugin to the selectable
+                } else {
                     showMessage(xhr.responseText, true, true);
                 }
             }
@@ -268,7 +275,7 @@ function uploadFile(file) {
     }
 }
 
-function selectSelectableElement (selectableContainer, elementToSelect){
+function selectSelectableElement(selectableContainer, elementToSelect) {
     // add unselecting class to all elements in the styleboard canvas except current one
     jQuery("li", selectableContainer).each(function() {
         if (this != elementToSelect[0])
@@ -283,7 +290,7 @@ function selectSelectableElement (selectableContainer, elementToSelect){
 }
 
 
- 
+
 
 
 

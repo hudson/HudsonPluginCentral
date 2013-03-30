@@ -22,9 +22,16 @@
     
         <body>
             <div class="container">
+                <ul>
+                    <j:forEach var="site" items="${app.sites}">
+                        <li style="display:inline; margin-right: 5px" >
+                            <a style="margin-right: 5px" href="${rootURL}/site/${site}">${site}</a>
+                        </li> 
+                    </j:forEach>
+                </ul>
                 <span style="width:100%; text-align:center">
                     <h1 style="color:#5C3566">
-                        Hudson 3 Plugin Central 
+                        ${it.name}
                     </h1>
                 </span> 
         
@@ -68,7 +75,7 @@
                     <div id="pluginInfoContainer">
                         <form id="updateForm">
                             <div id="pluginInfo">
-                               <!-- Plugin data is injected here using Ajax -->
+                                <!-- Plugin data is injected here using Ajax -->
                             </div>
                         </form>
                         <j:if test="${it.security.isPermitted('plugin:update')}">
@@ -79,7 +86,7 @@
                         </j:if>
                         <br/>
                         <span id="pluginUpdateMsg">
-                             <!-- Plugin data operation message injected -->
+                            <!-- Plugin data operation message injected -->
                         </span>
                         <br style="clear:both"/>
                     </div>
@@ -103,7 +110,7 @@
                     <div id="progressbar"></div>
     
                     <span id="pluginUploadMsg">
-                         <!-- Plugin upload operation message injected -->
+                        <!-- Plugin upload operation message injected -->
                     </span>
                 </div>
             </div>
