@@ -40,7 +40,7 @@ public class PluginCentral {
     private final UsageStats usageStats;
 
     public PluginCentral() throws IOException {
-        String updateSiteJsonPath = System.getProperty("update-site-json", "/Users/winstonp/Hudson/PluginCentral-test/update-site.json");
+        String updateSiteJsonPath = System.getProperty("update-site-json", "/Users/wjprakash/Hudson/PluginCentral-test/update-site.json");
         String updateSiteJson = FileUtils.readFileToString(new File(updateSiteJsonPath));
 
         updateSite = Utils.parseUpdateSite(updateSiteJson);

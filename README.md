@@ -15,6 +15,14 @@ Running
 
 java -jar plugin-central.war --httpPort=9696 --update-site=update-site.json
 
+Accessing
+=========
+
+http://localhost:9696/PluginCentral3
+
+Setup
+=====
+
 
 Metadata information provided in the update-site.json are
 
@@ -31,7 +39,7 @@ Metadata information provided in the update-site.json are
     "l10n-store-path" : "l10n",
     "plugins-download-root-url" : "http://hudson-ci.org/update-center3/downloads/plugins",
     "usage-stats-store-path" : "stats",
-    "usage-stats-private-key" : "<Your private key>"
+    "usage-stats-private-key" : "{Your private key}"
 }
 
 </code><pre>
