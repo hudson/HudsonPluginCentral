@@ -57,6 +57,13 @@
             <j:if test="${!it.type.equals('disabled')}">
                 <option value="disabled">Disabled</option>
             </j:if>
+            
+            <j:if test="${it.type.equals('obsolete')}">
+                <option value="obsolete" selected="selected">Obsolete</option>
+            </j:if>
+            <j:if test="${!it.type.equals('obsolete')}">
+                <option value="obsolete">Obsolete</option>
+            </j:if>
         </select> 
         <br/>
         <br/>
